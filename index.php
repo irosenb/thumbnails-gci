@@ -22,14 +22,42 @@
 				break;
 
 			default:
-				return false;
+				return "Filetype not found.";
+				break;
+		}
+
+		switch ($src) {
+			case 'xs':
+				$thumb_width = 32;
+				$thumb_height = 32;
+				break;
+
+			case 's':
+				$thumb_width = 64;
+				$thumb_height = 64;
+				break;
+			
+			case 'm':
+				$thumb_width = 128;
+				$thumb_height = 128;
+				break;
+
+			case 'l':
+				$thumb_width = 640;
+				$thumb_height = 480;
+				break;
+				
+			case 'xl':
+				$thumb_width = 1024;
+				$thumb_height = 678;
+				break;
+
+			default:
+				return "Size not found.";
 				break;
 		}
 		
 		list($width, $height) = getimagesize($src);
-
-		$thumb_width = 50;
-		$thumb_height = 50;
 
 		$thumb = imagecreatetruecolor($thumb_width, $thumb_height);
 
