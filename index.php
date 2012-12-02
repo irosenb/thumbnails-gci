@@ -1,10 +1,16 @@
 <?php
 
-	function thumbnail ($src, $size) {
+	public static function thumbnail ($image_name, $size) {
 
-		$type = exif_imagetype($src);
+		$image_path = OC_Filesystem::getLocalFile($image_name);
+			
+			if (!file_exists($image_path)) {
+				return null;
+			}
 
-		switch ($type) {
+		$image = new OC_Image($image_path);
+
+		/*switch ($type) {
 			case 'IMAGETYPE_GIF':
 				$image = imagecreatefromgif($src);
 				break;
@@ -25,8 +31,8 @@
 				return "Filetype not found.";
 				break;
 		}
-
-		switch ($src) {
+		*/
+		switch ($size) {
 			case 'xs':
 				$thumb_width = 32;
 				$thumb_height = 32;
@@ -53,16 +59,15 @@
 				break;
 
 			default:
-				return "Size not found.";
+				return null;
 				break;
 		}
 		
-		list($width, $height) = getimagesize($src);
+		$width = $image->width();
+		$height = $image->height();
 
-		$thumb = imagecreatetruecolor($thumb_width, $thumb_height);
-
-		imagecopyresampled($thumb, $image, 0, 0, 0, 0, $thumb_width, $thumb_height, $width, $height);
-
+		$thumb = $image->crop(0, 0, $thumb_width, $thumb_height);
+		
 		return $thumb;
 	}
 
